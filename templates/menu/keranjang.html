@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Keranjang - Kantin USK{% endblock %}
+
+{% block content %}
+<h4 class="mb-4">
+    <i class="fas fa-shopping-cart me-2" style="color:#ff6b35;"></i>Keranjang Belanja
+</h4>
+
+{% if keranjang %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr class="border-bottom">
+                            <th>Menu</th>
+                            <th class="text-center">Jumlah</th>
+                            <th class="text-end">Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for id, item in keranjang.items %}
+                        <tr>
+                            <td>
+                                <strong>{{ item.nama }}</strong><br>
+                                <small class="text-muted">
+                                    Rp {{ item.harga }}
+                                </small>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-secondary">
+                                    {{ item.jumlah }}x
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                Rp {{ item.harga|add:0 }}
+                            </td>
+                            <td class="text-end">
+                                <a href="/hapus-keranjang/{{ id }}/" 
+                                   class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Ringkasan Pesanan</h5>
+                <hr>
+                <div class="d-flex justify-content-between mb-3">
+                    <span>Total Pembayaran</span>
+                    <strong style="color: #ff6b35;">Rp {{ total }}</strong>
+                </div>
+                <a href="/checkout/" class="btn btn-primary w-100">
+                    <i class="fas fa-check-circle me-2"></i>Checkout Sekarang
+                </a>
+                <a href="/" class="btn btn-outline-secondary w-100 mt-2">
+                    <i class="fas fa-arrow-left me-2"></i>Lanjut Belanja
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="text-center py-5">
+    <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
+    <h5 class="text-muted">Keranjang masih kosong</h5>
+    <a href="/" class="btn btn-primary mt-3">
+        <i class="fas fa-utensils me-2"></i>Lihat Menu
+    </a>
+</div>
+{% endif %}
+{% endblock %}

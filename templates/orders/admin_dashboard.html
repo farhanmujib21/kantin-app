@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard Admin - Kantin USK{% endblock %}
+
+{% block content %}
+<h4 class="mb-4">
+    <i class="fas fa-tachometer-alt me-2" style="color:#ff6b35;"></i>Dashboard Admin
+</h4>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white" style="background:#ff6b35;">
+            <div class="card-body">
+                <h6>Total Pesanan</h6>
+                <h2>{{ pesanan.count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h6>Menunggu</h6>
+                <h2>{{ pesanan|length }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% for p in pesanan %}
+<div class="card mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>
+            <strong>Antrean #{{ p.nomor_antrean }}</strong>
+            &nbsp;|&nbsp; {{ p.pembeli.username }}
+            &nbsp;|&nbsp; {{ p.tanggal_pesan|date:"d M Y, H:i" }}
+        </span>
+        {% if p.status == 'menunggu' %}
+            <span class="badge bg-warning text-dark">Menunggu</span>
+        {% elif p.status == 'diproses' %}
+            <span class="badge bg-info">Diproses</span>
+        {% else %}
+            <span class="badge bg-success">Siap Diambil</span>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        {% for detail in p.details.all %}
+        <div class="d-flex justify-content-between">
+            <span>{{ detail.menu.nama_makanan }} x{{ detail.jumlah }}</span>
+            <span>Rp {{ detail.sub_total }}</span>
+        </div>
+        {% endfor %}
+        <hr>
+        <div class="d-flex justify-content-between align-items-center">
+            <strong>Total: Rp {{ p.total_harga }}</strong>
+            {% if p.status != 'siap' %}
+            <a href="/update-status/{{ p.id }}/" class="btn btn-primary btn-sm">
+                {% if p.status == 'menunggu' %}
+                    <i class="fas fa-fire me-1"></i>Proses Pesanan
+                {% else %}
+                    <i class="fas fa-check me-1"></i>Tandai Siap
+                {% endif %}
+            </a>
+            {% else %}
+            <span class="text-success fw-bold">
+                <i class="fas fa-check-circle me-1"></i>Selesai
+            </span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

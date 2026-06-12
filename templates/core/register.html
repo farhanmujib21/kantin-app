@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Register - Kantin USK{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card p-4 mt-5">
+            <div class="text-center mb-4">
+                <i class="fas fa-user-plus fa-3x" style="color: #ff6b35;"></i>
+                <h3 class="mt-2">Daftar Akun</h3>
+                <p class="text-muted">Buat akun untuk memesan makanan</p>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" 
+                           placeholder="Buat username" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" 
+                           placeholder="Buat password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-user-plus me-2"></i>Daftar
+                </button>
+            </form>
+            <hr>
+            <p class="text-center mb-0">
+                Sudah punya akun? 
+                <a href="/login/" style="color: #ff6b35;">Login di sini</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
